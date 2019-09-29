@@ -5,8 +5,8 @@
  */
 package a.com.Bean;
 
-import a.com.Entity.Cliente;
 import a.com.Dto.ClienteDto;
+import a.com.Entity.Cliente;
 import java.util.List;
 import javax.ejb.Local;
 

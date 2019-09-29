@@ -8,7 +8,7 @@ package a.com.Bean;
 import a.com.Dto.ClienteDto;
 import a.com.Entity.Cliente;
 import java.util.List;
-import javax.ejb.Stateful;
+import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -17,7 +17,7 @@ import javax.persistence.Query;
  *
  * @author Yesid
  */
-@Stateful
+@Stateless
 public class ClienteFacade extends AbstractFacade<Cliente> implements ClienteFacadeLocal {
 
     @PersistenceContext(unitName = "a.com_carroCompras-ejb_ejb_1.0-SNAPSHOTPU")
@@ -50,5 +50,3 @@ public class ClienteFacade extends AbstractFacade<Cliente> implements ClienteFac
         return usuario;
     }
 }
-
-
