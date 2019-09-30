@@ -5,16 +5,25 @@
  */
 package a.com.Controller;
 
+import a.com.Bean.ProductoFacadeLocal;
 import a.com.Entity.Cliente;
+import a.com.Entity.Producto;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 /**
  * Bean en cual se encarga de la session del Cliente
@@ -30,6 +39,33 @@ public class ControllerClie implements Serializable {
      * sistema
      */
     private Cliente clie;
+    private int cant;
+    private List<Producto> listaProductos;
+    private ControllerProductoSession productoSession;
+
+    private Producto seleccionarProducto;
+    @EJB
+    private ProductoFacadeLocal productoFacadeLocal;
+
+    @PostConstruct
+    public void init() {
+        clie = new Cliente();
+        listaProductos = productoFacadeLocal.findAll();
+        // productoDto = new ProductoDto();
+    }
+
+    public void onRowSelect(SelectEvent event) {
+        Producto p = (Producto) event.getObject();
+        List<Producto> listaProducto = productoSession.getListaProductoSession();
+
+        
+        
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+        FacesMessage msg = new FacesMessage("Car Unselected", ((Producto) event.getObject()).getNombre());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
 
     /**
      * Metodo que valida la session del Cliente. Si esta activa o inactiva
@@ -75,7 +111,52 @@ public class ControllerClie implements Serializable {
 
     }
 
+    public void anadirCarrito() {
+
+
+    }
+
     public ControllerClie() {
+    }
+
+    public Cliente getClie() {
+        return clie;
+    }
+
+    public void setClie(Cliente clie) {
+        this.clie = clie;
+    }
+
+    public ProductoFacadeLocal getProductoFacadeLocal() {
+        return productoFacadeLocal;
+    }
+
+    public void setProductoFacadeLocal(ProductoFacadeLocal productoFacadeLocal) {
+        this.productoFacadeLocal = productoFacadeLocal;
+    }
+
+    public List<Producto> getListaProductos() {
+        return listaProductos;
+    }
+
+    public void setListaProductos(List<Producto> listaProductos) {
+        this.listaProductos = listaProductos;
+    }
+
+    public int getCant() {
+        return cant;
+    }
+
+    public void setCant(int cant) {
+        this.cant = cant;
+    }
+
+    public Producto getSeleccionarProducto() {
+        return seleccionarProducto;
+    }
+
+    public void setSeleccionarProducto(Producto seleccionarProducto) {
+        this.seleccionarProducto = seleccionarProducto;
     }
 
 }
