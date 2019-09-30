@@ -11,10 +11,14 @@
         <ui:composition template="./Templates/masterPrincipal.xhtml">
 
             <ui:define name="content">
+
                 <f:metadata>
                     <f:event type="preRenderView" listener="#{controllerClie.validarSession()}"/>
+
+                    <f:event type="preRenderView" listener="#{controllerClie.listar('F')}" />
                 </f:metadata>
-                <h:form id="form2" >
+
+                <h:form >
                     <p:growl  id="growl" showDetail="true" sticky="true"  />  
 
                     <p:panel  header="Cliente">   
@@ -22,46 +26,34 @@
                         <p:commandButton value="#{msg.cerrarSession}" action="#{controllerClie.cerrarSession()}" />
                     </p:panel> 
 
-                </h:form>
-                <h:form id="form">
-                    <p:growl id="msgs" showDetail="true"/>
+                    <p:outputLabel value="Producto" />
 
-                    <p:dataTable id="cars1" var="p" value="#{controllerClie.listaProductos}" editable="true" style="margin-bottom:20px" selectionMode="single" selection="#{controllerClie.seleccionarProducto}" rowKey="#{p.idProducto}">
-                        <f:facet name="header">
-                            #{msg.listaProductos}
-                        </f:facet>
-                        <p:ajax event="rowSelect" listener="#{controllerClie.onRowSelect}" update=":form:msgs" />
-                        <p:ajax event="rowUnselect" listener="#{controllerClie.onRowUnselect}" update=":form:msgs" />
-                        <p:column headerText="#{msg.nombreProducto}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{p.nombre}" /></f:facet>
-                                <f:facet name="input"><p:inputText value="#{controllerListar.cedula}" required="true" style="width:100%" label="Cedula" /></f:facet>
-                            </p:cellEditor>
-                        </p:column>
+                    <p:selectOneMenu value="#{controllerVentaSession.producto}" >
+                        <f:selectItem noSelectionOption="true" itemLabel="Seleccione" itemValue="#{null}"/>
+                        <f:selectItems value="#{controllerClie.listaProductos}" var="p" itemLabel="#{p.nombre}" itemValue="#{p}"/>
+                    </p:selectOneMenu>
 
-                        <p:column headerText="#{msg.descripcionProducto}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{p.descripcion}" /></f:facet>
-                                <f:facet name="input"><p:inputText  value="#{controllerListar.nombre}" required="true" style="width:100%" label="Nombre"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="#{msg.precioProducto}">
-                            <p:cellEditor>
-                                <f:facet name="output"><h:outputText value="#{p.precio}" /></f:facet>
-                                <f:facet name="input"><p:inputText  value="#{controllerListar.apellido}" required="true" style="width:100%" label="Apellido"/></f:facet>
-                            </p:cellEditor>
-                        </p:column>
-                        <p:column headerText="#{msg.cantidad}">
-                            <p:inputText  value="#{controllerClie.cant}" required="true" style="width:100%" label="Cantidad"/>
-                        </p:column>
-                        <p:column >
-                            <p:commandButton value="#{msg.agregar}" actionListener="#{controllerClie.anadirCarrito}" >
-                                <f:setPropertyActionListener value="#{p}" target="#{controllerClie.seleccionarProducto}"/>
-                            </p:commandButton>
+                    <p:outputLabel value="Cantidad" />
+                    <p:inputText value="#{controllerVentaSession.cantidad}" />
+
+                    <p:commandButton value="Agregar al Carrito" actionListener="#{controllerVentaSession.agregarAlCarrito}" update="detalle"/>
+
+                    <p:dataTable id="detalle" value="#{controllerVentaSession.listaVenta}" var="det">
+                        <p:column headerText="Nombre Producto" >
+                            #{det.idProducto.nombre}
                         </p:column>
 
+                        <p:column headerText="Precio" >
+                            #{det.idProducto.precio}
+                        </p:column>
+
+                        <p:column headerText="Cantidad" >
+                            #{det.cantidad}
+                        </p:column>
                     </p:dataTable>
+                    <p:commandButton value="Registrar"/>
                 </h:form>
+
             </ui:define>
 
         </ui:composition>

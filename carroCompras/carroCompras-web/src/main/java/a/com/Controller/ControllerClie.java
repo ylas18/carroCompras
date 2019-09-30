@@ -50,21 +50,31 @@ public class ControllerClie implements Serializable {
     @PostConstruct
     public void init() {
         clie = new Cliente();
-        listaProductos = productoFacadeLocal.findAll();
+
         // productoDto = new ProductoDto();
     }
 
-    public void onRowSelect(SelectEvent event) {
-        Producto p = (Producto) event.getObject();
-        List<Producto> listaProducto = productoSession.getListaProductoSession();
+    public void listar(String valor) throws Exception {
+        System.out.println("Entre al metodo listar");
+        System.out.println(valor);
+        try {
+            if (valor.equals("F")) {
+                System.out.println("entre a medio");
 
-        
-        
+                listaProductos = productoFacadeLocal.findAll();
+                System.out.println("Entre");
+            }
+
+        } catch (Exception e) {
+            throw e;
+        }
     }
 
-    public void onRowUnselect(UnselectEvent event) {
-        FacesMessage msg = new FacesMessage("Car Unselected", ((Producto) event.getObject()).getNombre());
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+    private boolean isPostBack() {
+        boolean rpta;
+        rpta = FacesContext.getCurrentInstance().isPostback();
+        System.out.println(rpta);
+        return rpta;
     }
 
     /**
@@ -112,7 +122,6 @@ public class ControllerClie implements Serializable {
     }
 
     public void anadirCarrito() {
-
 
     }
 
